@@ -10,8 +10,15 @@ const productsDirectory = path.join(__dirname, '..', 'data', 'products')
 exports.resolvers = {
     Query: {
         getShoppingCartById: async (_, args, context) => {
+            const shoppingCartId = args.shoppingCartId
+            const filePath = path.join(shoppingCartsDirectory, `${shoppingCartId}.json`)
+            const shoppingCartExists = await fileExists(filePath)
+            if (!shoppingCartExists) return new GraphQLError('That shoppingcart dose not exists')
+            const shoppingCart = JSON.parse(await readFile(filePath))
 
-            return null
+            console.log(shoppingCart)
+            return shoppingCart
+            
         },
         getProductById: async (_, args, context) => {
 
