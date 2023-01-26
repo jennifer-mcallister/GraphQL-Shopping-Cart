@@ -1,0 +1,13 @@
+{
+    "shoppingCartId": "test",
+    "productsInShoppingCart": [{
+        "articleNumber": 194323, 
+        "productName": "Grumpy Cat",
+        "productPrice": 100
+    },{
+        "articleNumber": 194323, 
+        "productName": "Grumpy Cat",
+        "productPrice": 100
+    }],
+    "totalPrice": "100"
+}
