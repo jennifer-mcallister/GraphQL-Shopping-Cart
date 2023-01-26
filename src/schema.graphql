@@ -1,0 +1,33 @@
+type ShoppingCart {
+    shoppingCartId: ID
+    productsInShoppingCart: [Product]
+    totalPrice: Int
+}
+
+type Product {
+    articleNumber: ID
+    productName: String
+    productPrice: Int
+}
+
+type DeletedShoppingCartResponse {
+	deletedShoppingCart: ID
+	success: Boolean
+}
+
+type DeletedProductResponse {
+	deletedProduct: ID
+	success: Boolean
+}
+
+type Query {
+    getShoppingCartById(shoppingCartId: ID!): ShoppingCart
+    getProductById(articleNumber: ID!): Product
+}
+
+type Mutation {
+    createShoppingCart(shoppingCartId: ID!, productsInShoppingCart: [Product], totalPrice: Int): ID
+    clearShoppingCart(shoppingCartId: ID!): DeletedShoppingCartResponse
+    updateShoppingCart(shoppingCartId: ID!, productsInShoppingCart: [Product]!, totalPrice: Int!): ShoppingCart
+    deleteProductInShoppingCart(articleNumber: ID!, shoppingCartId: ID!, productsInShoppingCart: [Product]!, totalPrice: Int!): DeletedProductResponse
+}
