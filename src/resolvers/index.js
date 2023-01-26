@@ -21,8 +21,14 @@ exports.resolvers = {
             
         },
         getProductById: async (_, args, context) => {
+            const articleNumber = args.articleNumber
+            const filePath = path.join(productsDirectory, `${articleNumber}.json`)
+            const productExists = await fileExists(filePath)
+            if (!productExists) return new GraphQLError('That product dose not exists')
+            const product = JSON.parse(await readFile(filePath))
 
-            return null
+            console.log(product)
+            return product
         },
     },
     Mutation: {
