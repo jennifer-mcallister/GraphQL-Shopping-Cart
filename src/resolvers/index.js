@@ -7,6 +7,7 @@ const crypto = require('crypto')
 const shoppingCartsDirectory = path.join(__dirname, '..', 'data', 'shoppingCarts')
 const productsDirectory = path.join(__dirname, '..', 'data', 'products')
 
+// add check if added products is equal to products in data @ createShoppingCart, updateShoppingCart, 
 exports.resolvers = {
     Query: {
         getShoppingCartById: async (_, args, context) => {
@@ -76,7 +77,7 @@ exports.resolvers = {
                 success: true
             }
         },
-        updateShoppingCart: async (_, args, context) => {
+        addProductTooShoppingCart: async (_, args, context) => {
 
             const shoppingCartId = args.shoppingCartId
 
