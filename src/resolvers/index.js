@@ -59,8 +59,22 @@ exports.resolvers = {
             return newShoppingCart.shoppingCartId
         },
         clearShoppingCart: async (_, args, context) => {
-
-            return null
+            const shoppingCartId = args.shoppingCartId
+            const filePath = path.join(shoppingCartsDirectory, `${shoppingCartId}.json`)
+            const Exists = await fileExists(filePath)
+            if(!Exists) return new GraphQLError('Oppsie that shoppingcart does not exist')
+            try {
+                await deleteFile(filePath)
+            } catch (error) {
+                return {
+                    deletedShoppingCart: shoppingCartId,
+                    success: false
+                }
+            }
+            return {
+                deletedShoppingCart: shoppingCartId,
+                success: true
+            }
         },
         updateShoppingCart: async (_, args, context) => {
 
