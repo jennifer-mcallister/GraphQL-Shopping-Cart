@@ -33,8 +33,30 @@ exports.resolvers = {
     },
     Mutation: {
         createShoppingCart: async (_, args, context) => {
+            
+            const newShoppingCart = { 
+                shoppingCartId: crypto.randomUUID(), 
+                productsInShoppingCart: args.ProductsInShoppingCart || [], 
+                totalPrice: args.totalPrice || 0
+            } 
+            const productsInCart = newShoppingCart.productsInShoppingCart
+            newShoppingCart.totalPrice = 0;
+            for(let i = 0; i < productsInCart.length; i++) {
+                newShoppingCart.totalPrice += productsInCart[i].productPrice 
+            }
+            const filePath = path.join(shoppingCartsDirectory, `${newShoppingCart.shoppingCartId}.json`)
+            let idExists = true
+            while (idExists) {
+                const exists = await fileExists(filePath)
+                if(exists) {
+                    newShoppingCart.shoppingCartId = crypto.randomUUID()
+                    filePath = path.join(shoppingCartsDirectory, `${newShoppingCart.shoppingCartId}.json`)
+                }
+            idExists = false
+            }
+            await fsPromises.writeFile(filePath, JSON.stringify(newShoppingCart))
 
-            return null
+            return newShoppingCart.shoppingCartId
         },
         clearShoppingCart: async (_, args, context) => {
 
