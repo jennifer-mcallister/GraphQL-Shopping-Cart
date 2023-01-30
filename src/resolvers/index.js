@@ -78,21 +78,18 @@ exports.resolvers = {
             }
         },
         addProductTooShoppingCart: async (_, args, context) => {
-
             const shoppingCartId = args.shoppingCartId
+            const product = args.product
+            const filePathShoppingCart = path.join(shoppingCartsDirectory, `${shoppingCartId}.json`)
+            console.log(filePathShoppingCart)
 
+            const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
+            const Exists = await fileExists(filePathProducts)
+            if(!Exists) return new GraphQLError('Oppsie that product does not exist')
 
-            const filePath = path.join(shoppingCartsDirectory, `${shoppingCartId}.json`)
-            const exists = await fileExists(filePath)
-            if (!exists) return new GraphQLError('Oppsie that shoppingcart does not exist')
-            const updatedShoppingcart = {
-                    shoppingCartId: shoppingCartId, 
-                    productsInShoppingCart: args.ProductsInShoppingCart, 
-                    totalPrice: args.totalPrice 
-                }
-            await fsPromises.writeFile(filePath, JSON.stringify(updatedShoppingcart))
-            
-            return updatedShoppingcart
+           
+
+            return null
         },
         deleteProductInShoppingCart: async (_, args, context) => {
 
