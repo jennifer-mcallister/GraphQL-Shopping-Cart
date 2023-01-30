@@ -1,7 +1,7 @@
 {
   "name": "graphql-shopping-cart",
   "version": "1.0.0",
-  "description": "",
+  "description": "Assignment in API-Development.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,5 +19,13 @@
     "@graphql-tools/schema": "^9.0.14",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jennifer-mcallister/GraphQL-Shopping-Cart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jennifer-mcallister/GraphQL-Shopping-Cart/issues"
+  },
+  "homepage": "https://github.com/jennifer-mcallister/GraphQL-Shopping-Cart#readme"
 }

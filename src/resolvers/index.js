@@ -78,18 +78,28 @@ exports.resolvers = {
             }
         },
         addProductTooShoppingCart: async (_, args, context) => {
-            const shoppingCartId = args.shoppingCartId
+            const shoppingCart = {
+                shoppingCartId: args.shoppingCartId,
+                ProductsInShoppingCart: args.ProductsInShoppingCart,
+                totalPrice: args.totalPrice
+            }
             const product = args.product
-            const filePathShoppingCart = path.join(shoppingCartsDirectory, `${shoppingCartId}.json`)
-            console.log(filePathShoppingCart)
-
+            let productsInCart = shoppingCart.ProductsInShoppingCart
+            const filePathShoppingCart = path.join(shoppingCartsDirectory, `${shoppingCart.shoppingCartId}.json`)
+            const shoppingCartExists = await fileExists(filePathShoppingCart)
+            if(!shoppingCartExists) return new GraphQLError('Oppsie that shopping cart does not exist')
             const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
-            const Exists = await fileExists(filePathProducts)
-            if(!Exists) return new GraphQLError('Oppsie that product does not exist')
+            const productExists = await fileExists(filePathProducts)
+            if(!productExists) return new GraphQLError('Oppsie that product does not exist')
+            productsInCart.push(product)
+            shoppingCart.ProductsInShoppingCart = productsInCart
+            shoppingCart.totalPrice = 0;
+            for(let i = 0; i < productsInCart.length; i++) {
+                shoppingCart.totalPrice += productsInCart[i].productPrice 
+            }
+            await fsPromises.writeFile(filePathShoppingCart, JSON.stringify(shoppingCart))
 
-           
-
-            return null
+            return shoppingCart
         },
         deleteProductInShoppingCart: async (_, args, context) => {
 

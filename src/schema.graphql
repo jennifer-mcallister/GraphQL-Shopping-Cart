@@ -1,6 +1,6 @@
 type ShoppingCart {
     shoppingCartId: ID
-    productsInShoppingCart: [Product]
+    ProductsInShoppingCart: [Product]
     totalPrice: Int
 }
 
@@ -28,7 +28,7 @@ type Query {
 type Mutation {
     createShoppingCart(shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!], totalPrice: Int): ID
     clearShoppingCart(shoppingCartId: ID!): DeletedShoppingCartResponse
-    addProductTooShoppingCart(shoppingCartId: ID!, product: ProductsInput): ShoppingCart
+    addProductTooShoppingCart(shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!]!, totalPrice: Int!, product: ProductsInput!): ShoppingCart
     deleteProductInShoppingCart(articleNumber: Int!, shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!]!, totalPrice: Int!): DeletedProductResponse
 }
 
