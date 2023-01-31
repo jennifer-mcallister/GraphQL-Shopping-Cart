@@ -1,6 +1,6 @@
 type ShoppingCart {
     shoppingCartId: ID
-    ProductsInShoppingCart: [Product]
+    productsInShoppingCart: [Product]
     totalPrice: Int
 }
 
@@ -29,11 +29,17 @@ type Mutation {
     createShoppingCart(shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!], totalPrice: Int): ID
     clearShoppingCart(shoppingCartId: ID!): DeletedShoppingCartResponse
     addProductTooShoppingCart(shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!]!, totalPrice: Int!, product: ProductsInput!): ShoppingCart
-    deleteProductInShoppingCart(articleNumber: Int!, shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!]!, totalPrice: Int!): DeletedProductResponse
+    deleteProductInShoppingCart(product: ProductsInput!, shoppingCart: ShoppingCartInput!): DeletedProductResponse
 }
 
 input ProductsInput {
     articleNumber: Int
     productName: String
     productPrice: Int
+}
+
+input ShoppingCartInput {
+    shoppingCartId: ID!
+    productsInShoppingCart: [ProductsInput!]!
+    totalPrice: Int!
 }
