@@ -20,6 +20,11 @@ type DeletedProductResponse {
 	success: Boolean
 }
 
+type AddedProductsResponse {
+    addedProduct: Product
+    success: Boolean
+}
+
 type Query {
     getShoppingCartById(shoppingCartId: ID!): ShoppingCart
     getProductById(articleNumber: Int!): Product
@@ -28,7 +33,7 @@ type Query {
 type Mutation {
     createShoppingCart(shoppingCartId: ID!, ProductsInShoppingCart: [ProductsInput!], totalPrice: Int): ID
     clearShoppingCart(shoppingCartId: ID!): DeletedShoppingCartResponse
-    addProductTooShoppingCart(shoppingCart: ShoppingCartInput!, product: ProductsInput!): ShoppingCart
+    addProductTooShoppingCart(shoppingCart: ShoppingCartInput!, product: ProductsInput!): AddedProductsResponse
     deleteProductInShoppingCart(product: ProductsInput!, shoppingCart: ShoppingCartInput!): DeletedProductResponse
 }
 

@@ -72,25 +72,50 @@ exports.resolvers = {
             const shoppingCart = args.shoppingCart
             const product = args.product
             let productsInCart = shoppingCart.productsInShoppingCart
-
             const filePathShoppingCart = path.join(shoppingCartsDirectory, `${shoppingCart.shoppingCartId}.json`)
             const shoppingCartExists = await fileExists(filePathShoppingCart)
             if(!shoppingCartExists) return new GraphQLError('Oppsie that shopping cart does not exist')
 
-            const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
-            const productExists = await fileExists(filePathProducts)
-            if(!productExists) return new GraphQLError('Oppsie that product does not exist')
+            try {
+                const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
+                await fsPromises.stat(filePathProducts)
+                productsInCart.push(product)
+                shoppingCart.productsInShoppingCart = productsInCart
+                shoppingCart.totalPrice = 0;
+                for(let i = 0; i < productsInCart.length; i++) {
+                    shoppingCart.totalPrice += productsInCart[i].productPrice 
+                }
+                await fsPromises.writeFile(filePathShoppingCart, JSON.stringify(shoppingCart))
+            } catch (error) {
+                return {
+                    addedProduct: product,
+                    success: false
+                }
+            } return {
+                addedProduct: product,
+                success: true
+            }    
+                
+            
 
-            productsInCart.push(product)
-            shoppingCart.productsInShoppingCart = productsInCart
+            // const filePathShoppingCart = path.join(shoppingCartsDirectory, `${shoppingCart.shoppingCartId}.json`)
+            // const shoppingCartExists = await fileExists(filePathShoppingCart)
+            // if(!shoppingCartExists) return new GraphQLError('Oppsie that shopping cart does not exist')
 
-            shoppingCart.totalPrice = 0;
-            for(let i = 0; i < productsInCart.length; i++) {
-                shoppingCart.totalPrice += productsInCart[i].productPrice 
-            }
-            await fsPromises.writeFile(filePathShoppingCart, JSON.stringify(shoppingCart))
+            // const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
+            // const productExists = await fileExists(filePathProducts)
+            // if(!productExists) return new GraphQLError('Oppsie that product does not exist')
 
-            return shoppingCart
+            // productsInCart.push(product)
+            // shoppingCart.productsInShoppingCart = productsInCart
+
+            // shoppingCart.totalPrice = 0;
+            // for(let i = 0; i < productsInCart.length; i++) {
+            //     shoppingCart.totalPrice += productsInCart[i].productPrice 
+            // }
+            // await fsPromises.writeFile(filePathShoppingCart, JSON.stringify(shoppingCart))
+
+            // return shoppingCart
         },
         deleteProductInShoppingCart: async (_, args, context) => {
             const shoppingCart = args.shoppingCart
@@ -104,7 +129,7 @@ exports.resolvers = {
             const filePathProducts = path.join(productsDirectory, `${product.articleNumber}.json`)
             const productExists = await fileExists(filePathProducts)
             if(!productExists) return new GraphQLError('Oppsie that product does not exist')
-            
+
             for(let i = 0; i < productsInCart.length; i++) {
                 if (productsInCart[i].articleNumber === product.articleNumber) {
                     productsInCart.splice(i, 1)
