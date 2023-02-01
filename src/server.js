@@ -4,9 +4,6 @@ const { resolvers } = require('./resolvers')
 const { loadFiles } = require('@graphql-tools/load-files')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 const path = require('path')
-// const { expressMiddleware } = require('@apollo/server/express4')
-// const express = require('express')
-
 const { startStandaloneServer } = require('@apollo/server/standalone') 
 
 async function run() {
