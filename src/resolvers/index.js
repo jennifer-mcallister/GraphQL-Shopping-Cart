@@ -124,14 +124,12 @@ exports.resolvers = {
                 }
             }
             if (!productExistInShoppingCart)  return error
-
+            
             shoppingCart.totalPrice = 0;
                 for(let i = 0; i < productsInCart.length; i++) {
                     shoppingCart.totalPrice += productsInCart[i].productPrice 
                 }
-
             shoppingCart.productsInShoppingCart = productsInCart
-
             await fsPromises.writeFile(filePathShoppingCart, JSON.stringify(shoppingCart))
 
             return {
